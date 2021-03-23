@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Typescript Character Build</title>
+
+    <script src="index.js" charset="utf-8"></script>
+	  
+	 <style>
+	  
+		 	#container{
+				background-color: rgba(211,211,211,1.00);
+				padding: 20px;
+				max-width: 300px;
+				display: block;
+				text-align: center;
+				margin-left: auto;
+				margin-right: auto;
+		 	}
+		 
+		 .descrip{
+			 color: blue;
+			 font-weight: bold;
+		 }
+	  
+	  </style>
+  </head>
+  <body>
+	<div id="container">
+		<h1>Create Your Charater</h1>
+		  <form>
+			  <p>What is your character's name?</p>
+			  <input type="text" id="charName">
+
+			  <p>What is your character's age (in years)?</p>
+			  <input type="text" id="charAge" size="5">
+
+			  <p>What is your character's height?</p>
+			  <p><input type="text" size="5" id="charFeet"> feet and <input type="text" size="5" id="charInches"> inches</p>
+
+			  <p>Select a Class for your character:</p>
+				<select id="charClass">
+					<option>Choose</option>
+					<option>Mage</option>
+					<option>Monk</option>
+					<option>Ranger</option>
+					<option>Warrior</option>
+				</select>
+
+			  <p>Choose your character's role:</p>
+				<select id="charRole">
+					<option>Choose</option>
+					<option>Balanced</option>
+					<option>Defensive</option>
+					<option>Offensive</option>
+				</select>
+
+			  <p>What is your character's motto?</p>
+			  <textarea rows="4" cols="30" id="charMotto"></textarea>
+
+			  <p><button type="button" onClick="charBuild()">Create</button> <button type="reset" onClick="clearChar()">Clear</button></p>
+		  </form>
+
+		  <div id="charDisplay">
+
+		  </div>
+	
+	</div>
+  </body>
+</html>
