@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script src="recipeView.js"></script>
+    
+    <link rel="stylesheet" href="recipeView.css">
+</head>
+<body>
+    <div id="container">
+        <h1>Recipe Viewer using AJAX</h1>
+
+        <p><button id="previous" style="visibility:hidden;" onclick="viewRecipe('previousClick')">Previous</button>
+            <button onclick="viewRecipe('viewClick')">Random Recipe</button>
+            <button id="next" style="visibility: hidden;" onclick="viewRecipe('nextClick')">Next</button></p><br>
+
+        <p><div id="recipeView"></div></p>
+    </div>
+
+    <p><div id="recipeViewFull"></div></p>
+</body>
+</html>
