@@ -1,0 +1,279 @@
+<html>
+<head>
+    <link rel="manifest" href="/PWA_tic_tac_toe/manifest.json" />
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-96x96.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-128x128.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-384x384.png" />
+    <link rel="apple-touch-icon" href="/PWA_tic_tac_toe/images/icons/icon-512x512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+    <meta name="theme-color" content="#db4938" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+
+        body{
+            text-align: center;
+        }
+
+        #container{
+            position: relative;
+            margin: 0 auto;
+            margin-top: 20px;
+            height: 400px;
+            width: 400px;
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+
+        .grid-item {
+            cursor: pointer;
+            width: 133px;
+            height: 133px;
+            border: 2px solid rgba(0, 0, 0, 1);
+            font-size: 30px;         
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-item img{
+            height: 80;
+            width: auto;
+        }
+
+        #gameAlert{
+            visibility:hidden;
+            font-size: 30px;
+            color: green;
+        }
+
+        #winnerLine{
+            visibility: hidden;
+            z-index: 10;
+            position: absolute;
+            top:0px;
+            left: 0px;
+            height:10px;
+            width: 375px;
+            border-width:0;
+            color:gray;
+            background-color:rgb(0, 0, 0);
+            
+        }
+
+    </style>
+
+    <script>
+
+        var selectionName;
+        var starterSelection;
+        var currentPlayer = 0;
+        var sectionsSelected = [];
+        var turnCounter = 0;
+        var winner = "";
+        var endGame;
+        var x = ["", "", "", "", "", "", "", "", ""];
+        var o = ["", "", "", "", "", "", "", "", ""];
+
+        //images
+        var ximage = document.createElement('img');
+        ximage.src = "images/Tic_X.png";
+        var oimage = document.createElement('img');
+        oimage.src = "images/Tic_circle.png";
+
+        //select a starting player
+        function selectStarter(){
+            
+            var selectionName = document.getElementsByName("selection");
+
+            if(selectionName[0].checked){
+                starterSelection = 1;
+                document.getElementById("gameAlert").style.visibility = "visible";
+                document.getElementById("gameAlert").innerHTML = "O's turn";
+                return currentPlayer = starterSelection;
+            }
+            else if(selectionName[1].checked){
+                starterSelection = 2;
+                document.getElementById("gameAlert").style.visibility = "visible";
+                document.getElementById("gameAlert").innerHTML = "X's turn";
+                return currentPlayer = starterSelection;
+            }
+            else{
+                alert("Select who is starting!")
+            }
+        }
+
+        function turnSelection(sectionId){
+
+            //count amount of turns
+            turnCounter++;
+            
+            //escape out if same square selected
+            var escape;
+
+            var player = "";
+            var playerId = "";
+
+            //check if square has already been selected
+            for(i=0; i < sectionsSelected.length; i++){
+                if(sectionId == sectionsSelected[i]){
+                    escape = true;
+                }
+            }
+
+            if(endGame == "over"){
+                return;
+            }
+            else if(escape == true){
+                return;
+            }
+            //if no player has been selected, return
+            else if(currentPlayer == 0){
+                return;
+            }
+            else if(currentPlayer % 2 == 0){
+                $("#" + sectionId).append(ximage.cloneNode(true));
+                x[sectionId] = "X";
+                player = x;
+                playerId = "X";
+                document.getElementById("gameAlert").innerHTML = "O's turn";
+            } else {
+                $("#" + sectionId).append(oimage.cloneNode(true));
+                o[sectionId] = "O";
+                player = o;
+                playerId = "O";
+                document.getElementById("gameAlert").innerHTML = "X's turn";
+            }
+
+
+            if(turnCounter == 9){
+                document.getElementById("gameAlert").innerHTML = "Cat's game!";
+            }
+
+            //increment current player for next player (O's are odd X's are even)
+            compareMoves(player, playerId);
+            sectionsSelected.push(sectionId);
+            currentPlayer++;
+        }
+
+        function compareMoves(player, playerId){
+
+            //current player to compare
+            var p = playerId;
+
+            for(i=0; i<=8; i++){
+                if(player[0] == p && player[1] == p && player[2] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 55px; left: 20px; transform: rotate(0deg)";
+                    break;
+                }
+                else if(player[3] == p && player[4] == p && player[5] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 195px; left: 20px; transform: rotate(0deg)";
+                    break;
+                }
+                else if(player[6] == p && player[7] == p && player[8] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 335px; left: 20px; transform: rotate(0deg)";
+                    break;
+                }
+                else if(player[0] == p && player[3] == p && player[6] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 195px; left: -120px; transform: rotate(90deg)";
+                    break;
+                }
+                else if(player[1] == p && player[4] == p && player[7] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 195px; left: 20px; transform: rotate(90deg)";
+                    break;
+                }
+                else if(player[2] == p && player[5] == p && player[8] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 195px; left: 160px; transform: rotate(90deg)";
+                    break;
+                }
+                else if(player[0] == p && player[4] == p && player[8] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 195px; left: 22px; transform: rotate(45deg)";
+                    break;
+                }
+                else if(player[2] == p && player[4] == p && player[6] == p){
+                    winner = p;
+                    document.getElementById("winnerLine").style.cssText = "visibility: visible; top: 195px; left: 22px; transform: rotate(135deg)";
+                    break;
+                }
+            }
+
+            if(winner == ""){
+                return
+            }else{
+                document.getElementById("gameAlert").innerHTML = winner + " WINS!"
+                document.getElementById("gameAlert").style.visibility = "visible";
+                endGame = "over";
+            }
+
+        }
+
+        //reset the game
+        function reset(){
+            //reset all game trackers
+            endGame = "";
+            winner = "";
+            currentPlayer = 0;
+            turnCounter = 0;
+            document.getElementById("gameAlert").innerHTML = "Result"
+            document.getElementById("gameAlert").style.visibility = "hidden";
+            x = ["", "", "", "", "", "", "", "", ""];
+            o = ["", "", "", "", "", "", "", "", ""];
+            sectionsSelected = [];
+            //reset all field nodes
+            for(i=0; i<=8; i++){
+                document.getElementById(i).innerHTML = "";
+            }
+
+            document.getElementById("radioO").checked = false;
+            document.getElementById("radioX").checked = false;
+
+            //reset winner line
+            document.getElementById("winnerLine").style.cssText = "visibility: hidden; top: 0px; left: 0px";
+            
+        }
+
+        
+
+    </script>
+
+</head>
+<body>
+    <h1><u>Tic-Tac-Toe</u></h1>
+    <h3>Who is starting:</h3>
+    
+    <p><input id="radioO" type="radio" name="selection" value="o_selection">O's</p>
+    <p><input id="radioX" type="radio" name="selection" value="x_selection">X's</p>
+
+    <button type="button" onclick="selectStarter()">START</button><button style="margin-left: 10px;" type="reset" onclick="reset()">RESET</button>
+
+    <h2 id="gameAlert">Result</h2>
+
+    <div id="container">
+        <hr id="winnerLine">
+        <div id="0" class="grid-item" onclick="turnSelection(this.id)" style="border-top: none; border-left: none;"></div>
+        <div id="1" class="grid-item" onclick="turnSelection(this.id)" style="border-top: none;"></div>
+        <div id="2" class="grid-item" onclick="turnSelection(this.id)" style="border-top: none; border-right: none;"></div>  
+        <div id="3" class="grid-item" onclick="turnSelection(this.id)" style="border-left: none;"></div>
+        <div id="4" class="grid-item" onclick="turnSelection(this.id)"></div>
+        <div id="5" class="grid-item" onclick="turnSelection(this.id)" style="border-right: none;"></div>  
+        <div id="6" class="grid-item" onclick="turnSelection(this.id)" style="border-left: none; border-bottom: none;"></div>
+        <div id="7" class="grid-item" onclick="turnSelection(this.id)" style="border-bottom: none;"></div>
+        <div id="8" class="grid-item" onclick="turnSelection(this.id)" style="border-bottom: none; border-right: none;"></div>  
+    </div>
+
+    <script src="/PWA_tic_tac_toe/js/app.js"></script>
+</body>
+</html>
