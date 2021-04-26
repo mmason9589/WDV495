@@ -90,23 +90,30 @@
         //select a starting player
         function selectStarter(){
             
+            //make sure counter is 0 when game starts
+            turnCounter = 0;
+
             var selectionName = document.getElementsByName("selection");
 
             if(selectionName[0].checked){
                 starterSelection = 1;
                 document.getElementById("gameAlert").style.visibility = "visible";
                 document.getElementById("gameAlert").innerHTML = "O's turn";
+                document.getElementById("startButton").disabled = true;
                 return currentPlayer = starterSelection;
             }
             else if(selectionName[1].checked){
                 starterSelection = 2;
                 document.getElementById("gameAlert").style.visibility = "visible";
                 document.getElementById("gameAlert").innerHTML = "X's turn";
+                document.getElementById("startButton").disabled = true;
                 return currentPlayer = starterSelection;
             }
             else{
                 alert("Select who is starting!")
             }
+
+
         }
 
         function turnSelection(sectionId){
@@ -237,8 +244,12 @@
                 document.getElementById(i).innerHTML = "";
             }
 
+            //uncheck all radio buttons on reset
             document.getElementById("radioO").checked = false;
             document.getElementById("radioX").checked = false;
+
+            //enable the start button on reset
+            document.getElementById("startButton").disabled = false;
 
             //reset winner line
             document.getElementById("winnerLine").style.cssText = "visibility: hidden; top: 0px; left: 0px";
@@ -257,7 +268,7 @@
     <p><input id="radioO" type="radio" name="selection" value="o_selection">O's</p>
     <p><input id="radioX" type="radio" name="selection" value="x_selection">X's</p>
 
-    <button type="button" onclick="selectStarter()">START</button><button style="margin-left: 10px;" type="reset" onclick="reset()">RESET</button>
+    <button id="startButton" type="button" onclick="selectStarter()">START</button><button style="margin-left: 10px;" type="reset" onclick="reset()">RESET</button>
 
     <h2 id="gameAlert">Result</h2>
 
